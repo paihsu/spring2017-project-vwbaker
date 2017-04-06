@@ -1,2 +1,2 @@
 # 305 Project
-This is my project throughout 305
+This is a project I'm creating in CPE 305

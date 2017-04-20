@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="NewEventApp">
+<head>
+<title>New Event App</title>
+<meta charset="utf-8">
+
+<script
+        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link
+        href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css"
+        rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="home.css" />
+
+<style> 
+.button {
+    border-radius: 25px;
+    background: #fed136;
+    border: none;
+    color: white;
+    padding: 10px; 
+    width: 150px;
+    height: 50px;  
+    display: inline-block;
+    transition-duration: 0.5s;
+    cursor: pointer; 
+    font-family: monospace; 
+    font-weight: bold;
+}
+
+.button1 {
+    background-color: #ffcc00; 
+    color: white; 
+}
+
+.button1:hover {
+    background-color: #ffe066;
+    color: white;
+    
+}
+
+.button2 {
+    background-color: #ffcc00; 
+    color: white; 
+}
+
+.button2:hover {
+    background-color: #ffe066;
+    color: white;
+    
+}
+
+input:hover, select:hover, button:hover {
+   background-color: grey;
+
+   }
+   
+
+
+</style>
+
+<script>
+var app = angular.module('NewEventApp', []);
+
+app.controller('NewEventCtrl', function($scope, $http) {
+   $scope.event = {};
+   $scope.event.guests = [""];
+
+   var url = window.location.href.split('id=');
+   if (url.length > 1) {
+      $scope.id = url[1];
+      $http({
+         method: 'GET',
+         url: 'http://localhost:8080/event/' + $scope.id
+      }).then(function(response) {
+         $scope.event = response.data;
+      });
+   }
+
+   $scope.createNewEvent = function() {
+	var postRequest = {
+		method: 'POST',
+		url: 'http://localhost:8080/event',
+		data: {
+			eventName: $scope.event.eventName,
+			guests: $scope.event.guests,
+			date: $scope.event.date,
+			location: $scope.event.location,
+			description: $scope.event.description,
+			theme: $scope.event.theme
+		}
+	}
+        if ($scope.id !== null) {
+           postRequest.data.id = $scope.id;
+        }
+	$http(postRequest).then(function(response) {
+      		window.location.href = '/items_list.html?id=' + response.data.id;
+	});
+   };
+
+   $scope.addAnotherGuest = function() {
+      $scope.event.guests.push("");
+   };
+
+});
+
+
+</script>
+</head>
+   
+<body>
+   <div ng-controller="NewEventCtrl" align = "center">
+   <center>
+   <p> </p>     
+
+   <font size = "14">Let's Start the Planning!</font> </p>
+ 
+   Event Name: <input ng-model="event.eventName"/> </p>
+   <table>
+      <tr ng-repeat="guest in event.guests track by $index">
+         <td>
+            Guests: <input ng-model="event.guests[$index]"/> </p>
+	 </td>
+      </tr>
+   </table>
+	    <button ng-click="addAnotherGuest()" class = "button button2">Add Guest</button></p>
+   When: <input ng-model="event.date"/> </p>
+   Where: <input ng-model="event.location"/> </p>
+
+   Themes:
+      <select ng-model="event.theme">
+         <option value="Wedding">Wedding</option>
+         <option value="Baby Shower">Baby Shower</option>
+         <option value="Birthday">Birthday</option>
+         <option value="Outdoor Activity">Outdoor Activity</option>
+         <option value="Christmas">Christmas</option>
+         <option value="Halloween">Halloween</option>
+         <option value="House Warming">House Warming</option>
+      </select> </p>
+      
+   Description: <textarea rows="4" cols="60" placeholder = "Peter is turning 50! Let's all help and plan him a surprise party!" wrap = "hard" ng-model = "event.description"></textarea>
+  <br></br> 
+   <button ng-click="createNewEvent()" class="button button1"> <font size = "6">Next</button></font> 
+  
+    </center>
+     
+</div>
+</body>
+</html>

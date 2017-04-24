@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cpe305Spring17/spring2017-project-vwbaker.svg?branch=master)](https://travis-ci.org/cpe305Spring17/spring2017-project-vwbaker)
+
 # Plan-It!
 
 This is a project I am creating for CPE 305: Individual Software Design and Development.  

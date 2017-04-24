@@ -7,11 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Application {
-
-    @Bean
-    public CourseRepository courseRepository() {
-        return new InMemoryCourseRepositoy();
-    }
     
     @Bean
     public EventRepository eventRepository() {
